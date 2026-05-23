@@ -1,5 +1,3 @@
-# Beetho23.github.io-
-
 Privacy Policy — AutoDo
 Last updated: May 20, 2026
 
