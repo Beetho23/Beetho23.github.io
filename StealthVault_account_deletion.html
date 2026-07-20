@@ -1,148 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stealth Vault - Secure Pro | Account Deletion</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
 }
 
 body{
-    background:
-    radial-gradient(circle at top,#163a18 0%,#090909 45%,#020202 100%);
-    color:#fff;
-    min-height:100vh;
+
+background:#050505;
+
+background-image:
+radial-gradient(circle at top,#1d4d22 0%,transparent 35%),
+radial-gradient(circle at bottom right,#113d16 0%,transparent 30%);
+
+color:white;
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+padding:50px 20px;
+
 }
 
 .container{
-    width:min(900px,92%);
-    margin:60px auto;
-    padding:45px;
 
-    background:#0d0d0d;
+width:100%;
+max-width:900px;
 
-    border:1px solid rgba(57,255,20,.35);
+background:#0d0d0d;
 
-    border-radius:22px;
+border:1px solid rgba(57,255,20,.25);
 
-    box-shadow:
-        0 0 20px rgba(57,255,20,.15),
-        0 0 60px rgba(57,255,20,.08);
+border-radius:24px;
+
+overflow:hidden;
+
+box-shadow:
+0 0 20px rgba(57,255,20,.12),
+0 0 60px rgba(57,255,20,.08);
+
 }
 
-h1{
-    text-align:center;
-    font-size:42px;
-    margin-bottom:10px;
+.hero{
 
-    color:#39FF14;
+padding:60px 40px;
 
-    text-shadow:
-        0 0 8px #39FF14,
-        0 0 20px #39FF14;
+text-align:center;
+
+background:
+linear-gradient(180deg,#0d0d0d,#111);
+
+border-bottom:1px solid rgba(57,255,20,.15);
+
 }
 
-.subtitle{
-    text-align:center;
-    color:#A7A7A7;
-    margin-bottom:35px;
+.hero h1{
+
+font-size:48px;
+
+font-weight:800;
+
+color:#39FF14;
+
+text-shadow:
+0 0 10px #39FF14,
+0 0 25px rgba(57,255,20,.7);
+
+margin-bottom:15px;
+
+}
+
+.hero p{
+
+font-size:18px;
+
+color:#cfcfcf;
+
+max-width:600px;
+
+margin:auto;
+
+line-height:1.8;
+
+}
+
+.content{
+
+padding:40px;
+
 }
 
 .card{
 
-    margin-top:28px;
+background:#121212;
 
-    padding:28px;
+border:1px solid rgba(57,255,20,.15);
 
-    background:#121212;
+border-radius:18px;
 
-    border-radius:16px;
+padding:28px;
 
-    border:1px solid rgba(57,255,20,.18);
+margin-bottom:25px;
 
-    transition:.3s;
+transition:.3s;
+
 }
 
 .card:hover{
 
-    border-color:#39FF14;
+transform:translateY(-5px);
 
-    box-shadow:
-        0 0 20px rgba(57,255,20,.25);
+border-color:#39FF14;
 
-    transform:translateY(-4px);
+box-shadow:0 0 18px rgba(57,255,20,.25);
+
 }
 
 h2{
 
-    color:#39FF14;
+color:#39FF14;
 
-    margin-bottom:18px;
+margin-bottom:18px;
 
-    font-size:23px;
+font-size:24px;
+
 }
 
 p{
 
-    color:#D8D8D8;
+color:#d7d7d7;
 
-    line-height:1.8;
+line-height:1.9;
+
 }
 
 ol,ul{
 
-    margin-left:22px;
+margin-left:22px;
 
-    line-height:2;
+color:#d7d7d7;
 
-    color:#D8D8D8;
+line-height:2;
+
+margin-top:15px;
+
 }
 
 .email{
 
-    margin:30px auto;
+display:block;
 
-    text-align:center;
+margin-top:20px;
 
-    background:#39FF14;
+background:#39FF14;
 
-    color:#000;
+color:#000;
 
-    font-size:20px;
+text-decoration:none;
 
-    font-weight:700;
+padding:18px;
 
-    padding:20px;
+border-radius:14px;
 
-    border-radius:14px;
+font-size:20px;
 
-    box-shadow:
-        0 0 20px #39FF14,
-        0 0 45px rgba(57,255,20,.55);
-}
+font-weight:700;
 
-.email a{
+text-align:center;
 
-    color:#000;
+box-shadow:
+0 0 15px #39FF14,
+0 0 35px rgba(57,255,20,.5);
 
-    text-decoration:none;
+transition:.3s;
+
 }
 
 .email:hover{
 
-    transform:scale(1.02);
+transform:scale(1.03);
 
-    transition:.25s;
-}
-
-.highlight{
-
-    color:#39FF14;
 }
 
 .footer{
 
-    margin-top:45px;
+padding:30px;
 
-    text-align:center;
+text-align:center;
 
-    color:#888;
+border-top:1px solid rgba(57,255,20,.15);
+
+color:#888;
+
+font-size:14px;
+
 }
+
+.highlight{
+
+color:#39FF14;
+
+font-weight:600;
+
+}
+
+@media(max-width:700px){
+
+.hero{
+
+padding:45px 25px;
+
+}
+
+.hero h1{
+
+font-size:34px;
+
+}
+
+.content{
+
+padding:20px;
+
+}
+
+.email{
+
+font-size:17px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+
+<h1>STEALTH VAULT</h1>
+
+<p>
+Securely request the permanent deletion of your Stealth Vault - Secure Pro account and associated cloud data.
+</p>
+
+</div>
+
+<div class="content">
+
+<div class="card">
+
+<h2>Request Account Deletion</h2>
+
+<p>
+To permanently delete your account, send a request using the button below. Please include the email address associated with your Stealth Vault account.
+</p>
+
+<a class="email"
+href="mailto:beesgeniuslap@gmail.com?subject=Stealth%20Vault%20Account%20Deletion%20Request">
+
+📧 beesgeniuslap@gmail.com
+
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>How It Works</h2>
+
+<ol>
+
+<li>Click the email button above.</li>
+
+<li>Leave the subject unchanged.</li>
+
+<li>Include the email address linked to your account.</li>
+
+<li>Our team may request verification before processing your request.</li>
+
+</ol>
+
+</div>
+
+<div class="card">
+
+<h2>What Will Be Deleted</h2>
+
+<ul>
+
+<li>Your Stealth Vault account.</li>
+
+<li>Your profile information.</li>
+
+<li>Cloud data associated with your account.</li>
+
+<li>Any synced account preferences.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Processing Time</h2>
+
+<p>
+
+Verified deletion requests are typically completed within
+<span class="highlight">7 business days.</span>
+
+Certain information may be retained where required by law or for fraud prevention.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+© 2026 Bee'sGeniusLab • Stealth Vault - Secure Pro
+
+</div>
+
+</div>
+
+</body>
+</html>
