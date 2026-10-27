@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121214">
+  <meta name="description" content="DopaMute helps you reclaim your attention with focus sessions, distraction controls, minimalist app treatments, and on-device tools.">
+  <title>DopaMute — Turn Down the Dopamine Noise</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #121214;
+      --panel: #18181a;
+      --panel-2: #1e1e22;
+      --text: #f2f2f7;
+      --muted: #aaaab7;
+      --accent: #9aa5e8;
+      --accent-strong: #7986cb;
+      --border: rgba(242,242,247,.11);
+      --glass: rgba(255,255,255,.045);
+      --radius: 22px;
+      --max: 1160px;
+      --shadow: 0 22px 70px rgba(0,0,0,.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      margin: 0; background:
+        radial-gradient(ellipse at 80% 0%, rgba(121,134,203,.14), transparent 35rem),
+        radial-gradient(ellipse at 0% 35%, rgba(121,134,203,.07), transparent 30rem),
+        var(--bg);
+      color: var(--text); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      letter-spacing: -.01em; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
+      background: rgba(18,18,20,.78); border-bottom: 1px solid var(--border);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 750; font-size: 1.08rem; letter-spacing: -.04em; white-space: nowrap; }
+    .logo {
+      width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center;
+      background: linear-gradient(145deg, #aab4f3, #6675bb); color: #121214;
+      box-shadow: 0 6px 22px rgba(121,134,203,.24);
+    }
+    .logo svg { width: 23px; height: 23px; }
+    .navlinks { display: flex; align-items: center; gap: 25px; color: var(--muted); font-size: .9rem; }
+    .navlinks a:hover, .text-link:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 47px;
+      padding: 0 18px; border-radius: 13px; border: 1px solid transparent; font-weight: 650; font-size: .93rem;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--accent); color: #121214; box-shadow: 0 7px 24px rgba(121,134,203,.17); }
+    .btn-primary:hover { background: #b1b9f2; }
+    .btn-secondary { background: rgba(255,255,255,.035); border-color: var(--border); color: var(--text); }
+    .btn-secondary:hover { background: rgba(255,255,255,.075); border-color: rgba(255,255,255,.2); }
+    .menu-toggle { display: none; border: 1px solid var(--border); background: var(--panel); color: var(--text); border-radius: 11px; padding: 9px 12px; }
+    .hero { padding: 100px 0 86px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 62px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--glass); border-radius: 999px; padding: 7px 12px; color: #c8cbed; font-size: .82rem; margin-bottom: 23px; }
+    .eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(3.2rem, 7vw, 5.9rem); line-height: .99; letter-spacing: -.075em; max-width: 760px; margin-bottom: 25px; }
+    .gradient-text { background: linear-gradient(105deg, #f2f2f7 15%, #aeb8f6 65%, #7986cb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-copy { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.2rem); max-width: 610px; margin-bottom: 29px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .fineprint { font-size: .82rem; color: #858592; margin: 18px 0 0; }
+    .mock-wrap { position: relative; min-height: 440px; display: grid; place-items: center; }
+    .orb { position: absolute; width: 350px; height: 350px; border-radius: 50%; background: rgba(121,134,203,.14); filter: blur(60px); }
+    .phone {
+      width: min(290px, 82%); aspect-ratio: 9/18.4; border: 1px solid rgba(255,255,255,.22); border-radius: 39px;
+      padding: 11px; background: linear-gradient(145deg, #38383f, #09090a 45%); box-shadow: var(--shadow); transform: rotate(3deg); position: relative;
+    }
+    .phone-screen { height: 100%; border-radius: 29px; overflow: hidden; padding: 22px 16px; background: linear-gradient(180deg, #202126, #131316); border: 1px solid rgba(255,255,255,.06); }
+    .phone-top { display: flex; justify-content: space-between; font-size: .68rem; color: #b6b6c2; margin-bottom: 25px; }
+    .phone-title { font-size: 1.42rem; letter-spacing: -.06em; font-weight: 750; margin-bottom: 4px; }
+    .phone-sub { color: #9a9aa7; font-size: .72rem; margin-bottom: 22px; }
+    .focus-card { padding: 15px; border-radius: 18px; background: linear-gradient(135deg, rgba(154,165,232,.2), rgba(255,255,255,.035)); border: 1px solid rgba(154,165,232,.22); }
+    .focus-card small { color: #b8bdec; font-size: .67rem; }
+    .timer { font-size: 2rem; font-weight: 720; letter-spacing: -.07em; margin: 5px 0 10px; }
+    .progress { height: 5px; border-radius: 10px; background: #393943; overflow: hidden; }
+    .progress span { display: block; width: 64%; height: 100%; background: var(--accent); border-radius: inherit; }
+    .phone-label { margin: 20px 0 9px; font-size: .75rem; color: #c7c7d0; }
+    .app-list { display: grid; gap: 8px; }
+    .app-row { display: flex; align-items: center; gap: 9px; background: rgba(255,255,255,.035); padding: 9px; border-radius: 12px; font-size: .72rem; color: #d9d9e1; }
+    .app-dot { width: 25px; height: 25px; border-radius: 8px; display: grid; place-items: center; background: #4a4a51; color: #d5d5dc; font-size: .68rem; filter: grayscale(1); }
+    .app-row em { margin-left: auto; font-size: .62rem; color: #8e8e9b; font-style: normal; }
+    .section { padding: 88px 0; }
+    .section-head { max-width: 700px; margin-bottom: 36px; }
+    .kicker { text-transform: uppercase; letter-spacing: .16em; font-size: .75rem; font-weight: 750; color: var(--accent); margin-bottom: 13px; }
+    h2 { font-size: clamp(2.1rem, 4.5vw, 3.5rem); line-height: 1.08; letter-spacing: -.065em; margin-bottom: 16px; }
+    .section-intro { color: var(--muted); font-size: 1.05rem; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .card { background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018)); border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; box-shadow: 0 12px 36px rgba(0,0,0,.08); }
+    .card-icon { width: 45px; height: 45px; border-radius: 14px; display: grid; place-items: center; background: rgba(154,165,232,.12); color: #b9c1ff; margin-bottom: 20px; }
+    .card-icon svg { width: 23px; height: 23px; }
+    h3 { font-size: 1.1rem; letter-spacing: -.035em; margin-bottom: 9px; }
+    .card p { color: var(--muted); font-size: .93rem; margin-bottom: 0; }
+    .note { margin-top: 18px; padding: 17px 19px; border-radius: 14px; border: 1px solid rgba(154,165,232,.2); background: rgba(121,134,203,.07); color: #c6c9df; font-size: .9rem; }
+    .privacy-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 40px; align-items: start; }
+    .privacy-aside { position: sticky; top: 110px; }
+    .privacy-aside p { color: var(--muted); }
+    .policy-meta { color: #898995; font-size: .85rem; margin-top: 18px; }
+    .policy-list { display: grid; gap: 11px; }
+    details { border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.025); overflow: hidden; }
+    summary { cursor: pointer; padding: 19px 21px; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 15px; font-weight: 650; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent); font-size: 1.3rem; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    .detail-body { padding: 0 21px 21px; color: var(--muted); font-size: .94rem; }
+    .detail-body p:last-child, .detail-body ul:last-child { margin-bottom: 0; }
+    .detail-body li { margin: 6px 0; }
+    .permissions-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .permissions-table th, .permissions-table td { text-align: left; vertical-align: top; padding: 15px 13px; border-bottom: 1px solid var(--border); }
+    .permissions-table th { color: #d8d9eb; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+    .permissions-table td { color: var(--muted); }
+    code { color: #d4d8ff; background: rgba(154,165,232,.09); border: 1px solid rgba(154,165,232,.13); border-radius: 6px; padding: 2px 5px; font-size: .84em; overflow-wrap: anywhere; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.02); }
+    .contact-card { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 34px; border: 1px solid rgba(154,165,232,.22); border-radius: 26px; background: linear-gradient(120deg, rgba(121,134,203,.13), rgba(255,255,255,.025)); }
+    .contact-card p { color: var(--muted); margin-bottom: 0; }
+    footer { padding: 30px 0 38px; border-top: 1px solid var(--border); color: #858592; font-size: .86rem; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .footer-links a:hover { color: var(--text); }
+    .muted { color: var(--muted); }
+    .small { font-size: .82rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr .75fr; gap: 25px; }
+      .navlinks { gap: 15px; }
+      .navlinks a { font-size: .83rem; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .privacy-layout { grid-template-columns: 1fr; gap: 24px; }
+      .privacy-aside { position: static; }
+    }
+    @media (max-width: 700px) {
+      .wrap { width: min(100% - 30px, var(--max)); }
+      .nav { min-height: 68px; flex-wrap: wrap; gap: 12px; padding: 12px 0; }
+      .nav-cta { margin-left: auto; min-height: 40px; padding-inline: 12px; font-size: .8rem; }
+      .menu-toggle { display: inline-flex; align-items: center; }
+      .navlinks { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 0 4px; }
+      .navlinks.open { display: flex; }
+      .navlinks a { padding: 10px 4px; border-top: 1px solid var(--border); font-size: .95rem; }
+      .hero { padding: 68px 0 45px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      h1 { font-size: clamp(3rem, 15vw, 4.8rem); }
+      .mock-wrap { min-height: 370px; margin-top: 8px; }
+      .phone { width: 230px; }
+      .section { padding: 65px 0; }
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 22px; }
+      .contact-card { flex-direction: column; align-items: flex-start; padding: 25px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .permissions-table { min-width: 680px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="DopaMute home">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 4v16M5 12h6a4 4 0 0 0 0-8H5M14 15l5 5M19 15l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>DopaMute</span>
+      </a>
+      <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#permissions">Permissions</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <!-- Replace the placeholder URL with the published Google Play listing before launch. -->
+      <a class="btn btn-primary nav-cta" href="#download" aria-label="Download DopaMute on Google Play">Get the app <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navlinks">Menu</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow"><span></span> A calmer relationship with your phone</div>
+          <h1>Turn down the <span class="gradient-text">dopamine noise.</span></h1>
+          <p class="hero-copy">Reclaim your attention with focus sessions, minimalist icon treatments, and privacy-conscious tools designed to make distraction less appealing.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#download">Download on Google Play <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="#privacy">Read the Privacy Policy</a>
+          </div>
+          <p class="fineprint">Designed for intentional use. No ads are planned for DopaMute.</p>
+        </div>
+        <div class="mock-wrap" aria-label="Illustration of the DopaMute focus dashboard">
+          <div class="orb"></div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-top"><span>9:41</span><span>● ● ▰</span></div>
+              <div class="phone-title">Make room<br>for what matters.</div>
+              <div class="phone-sub">A little less scrolling. A little more living.</div>
+              <div class="focus-card">
+                <small>FOCUS SESSION</small>
+                <div class="timer">25:00</div>
+                <div class="progress"><span></span></div>
+              </div>
+              <div class="phone-label">Your distractions</div>
+              <div class="app-list">
+                <div class="app-row"><span class="app-dot">S</span> Social feed <em>Muted</em></div>
+                <div class="app-row"><span class="app-dot">V</span> Video apps <em>Paused</em></div>
+                <div class="app-row"><span class="app-dot">G</span> Games <em>Limited</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Less noise. More intention.</div>
+          <h2>Tools that help you step out of the loop.</h2>
+          <p class="section-intro">DopaMute is designed to put you back in charge of your attention—not to compete for more of it.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-3Z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>App Blocker &amp; Focus Sessions</h3>
+            <p>Set boundaries around distracting apps and create focus periods. Blocking behaviour depends on the Android capabilities and permissions enabled on your device.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 7v5l3 2M16 3h5v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Zen Meditation Vision AI</h3>
+            <p>Planned on-device session checks can help assess simple visual cues such as closed eyes or posture. This is not medical advice or a guarantee of meditation quality.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 3h11l3 3v15H5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 10h8M8 14h8M8 18h5M16 3v4h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>RealBook Study Vision AI</h3>
+            <p>Planned on-device visual checks can look for a book or study setup during a session. Detection can be imperfect and should remain under the user's control.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Minimalist Text Launcher</h3>
+            <p>A calmer, text-focused launcher concept that reduces visual clutter and can show muted or inverted icons within its own interface.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Notification Noise Controls</h3>
+            <p>Explore supported notification and Do Not Disturb controls to reduce interruptions. Automatic dismissal and notification access depend on permissions and Android restrictions.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 1 1 8 0v3M12 14v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Privacy-First by Design</h3>
+            <p>The intended design prioritises local processing and minimal data collection. The final privacy guarantees must match the app's actual code, SDKs, and permissions.</p>
+          </article>
+        </div>
+        <div class="note"><strong>Feature status:</strong> This page describes the product direction. Do not treat a feature as available until it has been implemented, tested, and released. Android may restrict system-wide colour changes, app blocking, and notification handling.</div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="wrap privacy-layout">
+        <aside class="privacy-aside">
+          <div class="kicker">Privacy policy</div>
+          <h2>Your attention is yours. Your data should be, too.</h2>
+          <p>This policy template describes the intended privacy approach for DopaMute. Before publication, the developer must verify every statement against the released app, its SDKs, and its actual data flows.</p>
+          <div class="policy-meta">
+            <div><strong>App:</strong> DopaMute</div>
+            <div><strong>Package:</strong> <code>com.bee.dopamute</code></div>
+            <div><strong>Effective date:</strong> October 27, 2026</div>
+            <div><strong>Contact:</strong> <a class="text-link" href="mailto:Beesgeniuslab@gmail.com">Beesgeniuslab@gmail.com</a></div>
+          </div>
+        </aside>
+        <div class="policy-list">
+          <details open>
+            <summary>1. Scope and policy status</summary>
+            <div class="detail-body">
+              <p>This policy applies to the DopaMute Android application and explains how the app is intended to handle information when you use its features. The developer should update this policy before release and whenever data practices change.</p>
+              <p>Only publish absolute statements such as “no data is transmitted” after verifying the release build, all third-party SDKs, network behaviour, backups, logs, and crash-reporting configuration.</p>
+            </div>
+          </details>
+          <details>
+            <summary>2. Information processed on your device</summary>
+            <div class="detail-body">
+              <p>Depending on the features you enable, DopaMute may process app selections, focus schedules, session state, preferences, and usage information needed to provide distraction-management features. The intended design is to store this information in private local app storage and avoid collecting more than is necessary.</p>
+              <p>The implementation must identify the actual storage mechanisms used. If preferences are stored in SharedPreferences, DataStore, Room, or another location, the final policy and documentation should reflect that implementation accurately.</p>
+            </div>
+          </details>
+          <details>
+            <summary>3. Analytics, advertising, and remote services</summary>
+            <div class="detail-body">
+              <p>DopaMute's intended business model does not include advertising networks or selling personal information. The planned architecture is local-first and does not require an account or cloud service for core functionality.</p>
+              <p>This statement must be verified against the released app. If any analytics, crash reporting, billing, remote configuration, or other third-party SDK is added, disclose the relevant data handling and update the policy accordingly. Google Play Billing may process purchase-related information under Google's applicable terms.</p>
+            </div>
+          </details>
+          <details>
+            <summary>4. Camera and on-device Vision AI</summary>
+            <div class="detail-body">
+              <p>If the Zen Meditation or RealBook Study features are released, the intended design is to analyse camera frames on-device to estimate limited visual cues, such as eye closure, posture, or the presence of a book.</p>
+              <p>Camera access should occur only after the user initiates a feature and grants permission. The intended implementation does not save photos or videos. Frames should be processed in memory and discarded promptly after analysis, without uploading them to a server.</p>
+              <p>These are design commitments, not a substitute for technical verification. Before making an absolute guarantee, inspect the camera pipeline, ML Kit configuration, logs, caching, temporary files, and all SDK behaviour. If processing or storage differs, revise this policy.</p>
+            </div>
+          </details>
+          <details>
+            <summary>5. Permissions and sensitive access</summary>
+            <div class="detail-body">
+              <p>DopaMute may request special Android access for selected features, such as usage access, accessibility service operation, notification access, camera access, or Do Not Disturb policy access. These permissions should be requested only when required and explained before the user enables the associated feature.</p>
+              <p>Accessibility access must be narrowly scoped to the declared purpose and comply with Google Play policies. DopaMute should not use it to collect credentials, read unrelated personal content, or perform undisclosed actions. Users can revoke permissions through Android settings, although some features may stop working afterward.</p>
+            </div>
+          </details>
+          <details>
+            <summary>6. Data sharing, sale, and disclosure</summary>
+            <div class="detail-body">
+              <p>DopaMute is not designed to sell personal information. The intended local-first model avoids routine sharing of focus preferences and usage information with the developer.</p>
+              <p>If future versions introduce third-party services, support uploads, cloud synchronisation, or legally required disclosures, the policy must explain what information is involved, the purpose, and the applicable recipients before those practices are released.</p>
+            </div>
+          </details>
+          <details>
+            <summary>7. Retention, deletion, and backups</summary>
+            <div class="detail-body">
+              <p>Locally stored data should remain on the device for as long as needed to provide the selected features. Users should be able to clear relevant history or delete local app data where supported. Uninstalling the app generally removes its private local data, subject to Android backup and device settings.</p>
+              <p>The developer must verify Android backup rules, exported files, logs, and any optional data export before describing deletion as complete or irreversible.</p>
+            </div>
+          </details>
+          <details>
+            <summary>8. Children's privacy</summary>
+            <div class="detail-body">
+              <p>DopaMute is a general digital wellbeing tool. The developer must determine the intended audience and comply with applicable child-safety, consent, and Google Play Families requirements if the app is directed to children or is otherwise covered by those requirements. Do not claim compliance without completing the relevant review.</p>
+            </div>
+          </details>
+          <details>
+            <summary>9. Security</summary>
+            <div class="detail-body">
+              <p>The app should use Android's private application storage, minimise permissions, avoid unnecessary network access, and protect sensitive data from unintended exposure. No software can guarantee absolute security; users should keep Android updated and protect access to their devices.</p>
+            </div>
+          </details>
+          <details>
+            <summary>10. Changes to this policy</summary>
+            <div class="detail-body">
+              <p>This policy may be updated when DopaMute's features, SDKs, legal requirements, or data practices change. The developer should update the effective date and communicate material changes through an appropriate channel.</p>
+            </div>
+          </details>
+          <details>
+            <summary>11. Contact the developer</summary>
+            <div class="detail-body">
+              <p>For privacy questions or requests, contact <a class="text-link" href="mailto:Beesgeniuslab@gmail.com">Beesgeniuslab@gmail.com</a>.</p>
+              <p>Developer: DopaMute team. Replace this description with the legal developer identity and any required business contact details before publication.</p>
+            </div>
+          </details>
+          <p class="small muted">Important: This is a privacy-policy starting point, not legal advice or a certification of Google Play compliance. The developer is responsible for verifying the app's real behaviour and applicable legal requirements before publishing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="permissions">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Transparency by default</div>
+          <h2>Permissions, explained.</h2>
+          <p class="section-intro">Permissions should be requested only when a user enables the feature that needs them. Exact declarations and access flows must be confirmed against the implemented Android code and current platform policies.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="permissions-table">
+            <thead><tr><th>Permission / access</th><th>Purpose</th><th>Important note</th></tr></thead>
+            <tbody>
+              <tr><td><code>PACKAGE_USAGE_STATS</code></td><td>Can support local foreground-app usage checks and usage summaries when the user grants Usage Access.</td><td>Special access is enabled through Android Settings. It does not, by itself, block apps from opening.</td></tr>
+              <tr><td><code>FOREGROUND_SERVICE</code></td><td>May be needed for a user-visible focus service that must continue while the app is not in the foreground.</td><td>Service types and restrictions depend on the target Android version. Use only when justified.</td></tr>
+              <tr><td><code>ACCESS_NOTIFICATION_POLICY</code></td><td>Allows eligible features to request Do Not Disturb policy access.</td><td>The user must grant notification policy access in system settings. Do not silently change DND settings.</td></tr>
+              <tr><td><code>BIND_ACCESSIBILITY_SERVICE</code></td><td>Declared by an accessibility service to allow Android to bind to it for a disclosed, user-enabled purpose.</td><td>This is a service binding permission, not a permission an app requests in the usual runtime dialog. Google Play accessibility policies apply.</td></tr>
+              <tr><td><code>BIND_NOTIFICATION_LISTENER_SERVICE</code></td><td>Declared by a notification listener service to let Android bind after the user enables notification access.</td><td>Notification access is sensitive. Disclose exactly what is observed and whether any actions are performed.</td></tr>
+              <tr><td><code>CAMERA</code></td><td>May enable user-initiated camera analysis for planned on-device Vision AI features.</td><td>Request at runtime. Verify that frames are not saved or transmitted before promising this publicly.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note"><strong>Accuracy note:</strong> Android permission names and service declarations are not interchangeable. The manifest and permission flows must be reviewed against the exact Android SDK, feature implementation, and current Google Play policy before release.</div>
+      </div>
+    </section>
+
+    <section class="section" id="download">
+      <div class="wrap">
+        <div class="contact-card">
+          <div>
+            <div class="kicker">Take your attention back</div>
+            <h2 style="margin-bottom:10px">Make space for what matters.</h2>
+            <p>Start with one intentional session. Build a calmer relationship with your phone, one choice at a time.</p>
+            <p class="small" style="margin-top:12px">Google Play listing coming soon.</p>
+          </div>
+          <!-- Replace # with the real Google Play listing URL after publication. -->
+          <a class="btn btn-primary" href="mailto:Beesgeniuslab@gmail.com?subject=DopaMute%20Google%20Play%20launch" aria-label="Ask about the DopaMute launch">Get launch updates <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Contact</div>
+          <h2>Questions about DopaMute?</h2>
+          <p class="section-intro">For support, privacy questions, or feedback, contact the developer by email.</p>
+          <a class="btn btn-secondary" href="mailto:Beesgeniuslab@gmail.com">Beesgeniuslab@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div>© 2026 DopaMute. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#permissions">Permissions</a>
+        <a href="mailto:Beesgeniuslab@gmail.com">Support</a>
+        <!-- Replace with your actual Google Play developer profile URL after publishing. -->
+        <a href="#download">Google Play developer page</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navlinks = document.getElementById('navlinks');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navlinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navlinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navlinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>
